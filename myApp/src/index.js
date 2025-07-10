@@ -1,21 +1,24 @@
-import mongoose from "mongoose";
-import { DB_NAME } from "./constants.js";
 import express from "express";
-import { connectDB } from "./db/index.js";
-//Alternate import for dotenv
+import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { DB_NAME } from "./constants.js";
+import { connectDB } from "./db/index.js";
+
+// Load .env
 dotenv.config({ path: "./env" });
 
+// Initialize express app
+const app = express();
+
 connectDB()
-  .then()
-  .catch(() => {
+  .then(() => {
     app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server is running at port : ${process.env.PORT}`);
+      console.log(`Server is running at http://localhost:${process.env.PORT}`);
     });
   })
-
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Optional: stop the app if DB connection fails
   });
 
 // require("dotenv").config({path:'./env'});
